@@ -15,6 +15,10 @@ object SunnyWeatherNetwork {
     //2.调用接口对象方法
     suspend fun searchPlaces(query: String) = placeService.searchPlaces(query).await()
 
+    private val weatherService = ServiceCreator.create(WeatherService::class.java)
+    suspend fun getDailyWeather(lng: String, lat: String) = weatherService.getDailyWeather(lng, lat).await()
+    suspend fun getRealtimeWeather(lng: String, lat: String) = weatherService.getRealtimeWeather(lng, lat).await()
+
     //3.利用协程获取响应数据
     private suspend fun <T> Call<T>.await(): T {
         return suspendCoroutine { continuation ->
@@ -31,4 +35,7 @@ object SunnyWeatherNetwork {
             })
         }
     }
+
+
+
 }
